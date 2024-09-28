@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: Rendez-vous
+  config:
+    import: optional:configserver:http://localhost:8888

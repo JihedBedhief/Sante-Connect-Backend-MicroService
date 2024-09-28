@@ -1,0 +1,37 @@
+eureka:
+  client:
+    register-with-eureka: false
+
+server:
+  port: 8222
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: users
+          uri: htp://localhost:8090
+          predicates:
+            - Path=/api/users/**
+        - id: rendez-vous
+          uri: htp://localhost:8091
+          predicates:
+            - Path=/api/rendez-vous/**
+        - id: DossierMedical
+          uri: htp://localhost:8092
+          predicates:
+            - Path=/api/DossierMedical/**
+        - id: Blogs
+          uri: htp://localhost:8093
+          predicates:
+            - Path=/api/blog/**
+        - id: Avis
+          uri: htp://localhost:8094
+          predicates:
+            - Path=/api/avis/**
+
