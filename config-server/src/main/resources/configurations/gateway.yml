@@ -1,11 +1,25 @@
 eureka:
+  instance:
+    hostname: localhost
   client:
-    register-with-eureka: false
+    service-url:
+      defaultZne: http://localhost:8761/eureka
+
+
 
 server:
   port: 8222
 
+
+
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/springboot-microservice-realm
+  main:
+    allow-bean-definition-overriding=true:
   application:
     name: gateway
   cloud:
@@ -15,23 +29,22 @@ spring:
           enabled: true
       routes:
         - id: users
-          uri: htp://localhost:8090
+          uri: http://localhost:8090
           predicates:
             - Path=/api/users/**
         - id: rendez-vous
-          uri: htp://localhost:8091
+          uri: http://localhost:8091
           predicates:
             - Path=/api/rendez-vous/**
         - id: DossierMedical
-          uri: htp://localhost:8092
+          uri: http://localhost:8092
           predicates:
             - Path=/api/DossierMedical/**
         - id: Blogs
-          uri: htp://localhost:8093
+          uri: http://localhost:8093
           predicates:
             - Path=/api/blog/**
         - id: Avis
-          uri: htp://localhost:8094
+          uri: http://localhost:8094
           predicates:
             - Path=/api/avis/**
-
