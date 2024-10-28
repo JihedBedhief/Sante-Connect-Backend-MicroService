@@ -1,8 +1,7 @@
 server:
-  port: 8888
+  port: 9091
+
 spring:
-  profiles:
-    active: native
   application:
     name: config-server
   cloud:
@@ -10,4 +9,16 @@ spring:
       server:
         native:
           search-locations: classpath:/configurations
+        git:
+          enabled: false
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

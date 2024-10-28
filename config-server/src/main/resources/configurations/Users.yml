@@ -8,9 +8,30 @@ eureka:
 spring:
   application:
     name: Users
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+        issuer-uri: http://localhost:8080/realms/micro-services
+      client:
+        authority-mapping:
+          ROLE_USER: ROLE_USER
+          ROLE_ADMIN: ROLE_ADMIN
+        provider:
+          oidc:
+            issuer-uri: http://localhost:8080/realms/micro-services
+            authorization-uri: http://localhost:8080/realms/micro-services/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/micro-services/protocol/openid-connect/token
+            user-info-uri: http://localhost:8080/realms/micro-services/protocol/openid-connect/userinfo
+            jwk-set-uri: http://localhost:8080/realms/micro-services/protocol/openid-connect/certs
+        registration:
+          oidc:
+            client-id: micro-services-api
+            client-secret:
+            scope: openid, profile, email, offline_access
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydatabase?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/keycloak?createDatabaseIfNotExist=true
     username: root
     password:
   jpa:
@@ -20,7 +41,18 @@ spring:
     database: mysql
 
 
-
+keycloak:
+  realm: micro-services
+  resource: micro-services-api
+  auth-server-url: http://localhost:8080/
+  credentials:
+    secret:
+  ssl-required: external
+  use-resource-role-mappings: true
+  bearer-only: true
+  public-client: true
+  cors: true
+  principal-attribute: admin
 
 server:
   port: 8090

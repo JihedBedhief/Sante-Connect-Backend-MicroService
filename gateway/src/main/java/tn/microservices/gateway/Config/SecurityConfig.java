@@ -1,4 +1,4 @@
-package com.javatechie.config;
+package tn.microservices.gateway.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
