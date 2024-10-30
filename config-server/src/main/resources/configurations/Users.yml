@@ -3,7 +3,7 @@ eureka:
     hostname: localhost
   client:
     service-url:
-      defaultZne: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka
 
 spring:
   application:
@@ -26,14 +26,14 @@ spring:
             jwk-set-uri: http://localhost:8080/realms/micro-services/protocol/openid-connect/certs
         registration:
           oidc:
-            client-id: micro-services-api
-            client-secret:
+            client-id: pidev-client-ang
+            client-secret: JSrMeVKln7Dc7CE5215kAMeOcpXZq83Q
             scope: openid, profile, email, offline_access
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/keycloak?createDatabaseIfNotExist=true
+    url: jdbc:mysql://mysql-db:3306/keycloak?createDatabaseIfNotExist=true
     username: root
-    password:
+    password: root
   jpa:
     show-sql: true
     hibernate:
@@ -43,8 +43,8 @@ spring:
 
 keycloak:
   realm: micro-services
-  resource: micro-services-api
-  auth-server-url: http://localhost:8080/
+  resource: pidev-client-ang
+  auth-server-url: http://keycloak:8080/
   credentials:
     secret:
   ssl-required: external

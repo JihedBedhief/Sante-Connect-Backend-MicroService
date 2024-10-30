@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 8888
 
 spring:
   application:
@@ -9,16 +9,11 @@ spring:
       server:
         native:
           search-locations: classpath:/configurations
-        git:
-          enabled: false
-
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
+  endpoint:
+    health:
+      show-details: always
