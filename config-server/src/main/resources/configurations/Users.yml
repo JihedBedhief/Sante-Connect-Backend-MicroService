@@ -27,7 +27,7 @@ spring:
         registration:
           oidc:
             client-id: pidev-client-ang
-            client-secret: JSrMeVKln7Dc7CE5215kAMeOcpXZq83Q
+            client-secret: 9Th6ir8luit2Mt7MjPGNVssHliZLzOtq
             scope: openid, profile, email, offline_access
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -91,7 +91,7 @@ services:
       dockerfile: Dockerfile
     container_name: gateway
     ports:
-      - "8222:8222"
+      - "8095:8095"
     networks:
       - microservices-network
     environment:
