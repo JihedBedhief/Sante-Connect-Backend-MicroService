@@ -1,6 +1,8 @@
 eureka:
   instance:
     hostname: localhost
+    leaseRenewalIntervalInSeconds: 10      # Time interval (in seconds) for clients to renew their lease with Eureka
+    leaseExpirationDurationInSeconds: 30   # Duration (in seconds) after which an instance is considered down if no renewal happens
   client:
     register-with-eureka: false
     fetch-registry: false
@@ -9,6 +11,7 @@ eureka:
 
 server:
   port: 8761
+
 spring:
   application:
     name: discovery
