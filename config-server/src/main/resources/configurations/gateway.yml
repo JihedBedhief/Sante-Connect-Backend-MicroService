@@ -8,12 +8,12 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
 
-
 server:
   port: 8095
+
+spring:
   main:
     web-application-type: reactive
-    allow-bean-definition-overriding=true:
   application:
     name: gateway
   cloud:
@@ -23,22 +23,22 @@ server:
           enabled: true
       routes:
         - id: users
-          uri: http://localhost:8090
+          uri: lb://users
           predicates:
             - Path=/api/users/**
         - id: rendez-vous
-          uri: http://localhost:8091
+          uri: lb://rendez-vous
           predicates:
             - Path=/api/rendez-vous/**
         - id: DossierMedical
-          uri: http://localhost:8092
+          uri: lb://DossierMedical
           predicates:
             - Path=/api/DossierMedical/**
         - id: Blogs
-          uri: http://localhost:8093
+          uri: lb://Blogs
           predicates:
             - Path=/api/blog/**
         - id: Avis
-          uri: http://localhost:8094
+          uri: lb://Avis
           predicates:
             - Path=/api/avis/**

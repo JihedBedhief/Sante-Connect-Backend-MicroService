@@ -124,6 +124,89 @@ services:
         condition: service_started
 
 
+  rendez-vous:
+    build:
+      context: ./Rendez-vous-MicroService
+    container_name: rendez-vous
+    ports:
+      - "8091:8091"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+    depends_on:
+      - discovery-server
+    networks:
+      - microservices-network
+
+
+  chatbot:
+    build:
+      context: ./chatbot  # Path to your chatbot Dockerfile
+    container_name: chatbot
+    ports:
+      - "5000:5000"
+    networks:
+      - microservices-network
+    environment:
+      - MONGO_URI=mongodb+srv://jihed:manajero@cluster0.nuhd6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+    depends_on:
+      - discovery-server
+
+
+  dossiers-service:
+    build:
+      context: ./DossierMedical-microService
+      dockerfile: Dockerfile
+    container_name: dossieers
+    ports:
+      - "8092:8092"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/keycloak?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - microservices-network
+
+  blog:
+    build:
+      context: ./Blog
+      dockerfile: Dockerfile
+    container_name: blog
+    ports:
+      - "8093:8093"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/keycloak?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - microservices-network
+
+  avis:
+    build:
+      context: ./Avis
+      dockerfile: Dockerfile
+    container_name: avis
+    ports:
+      - "8094:8094"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/keycloak?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - microservices-network
+
+
+
 networks:
   microservices-network:
     driver: bridge
