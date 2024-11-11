@@ -1,11 +1,53 @@
 server:
   port: 8095
+
 spring:
   application:
     name: gateway
   config:
-    import: optional:configserver:http://localhost:8888
+    import: optional:configserver:http://localhost:8888  # Assurez-vous que votre serveur de configuration fonctionne
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: users
+          uri: lb://USERS  # Utilisation de la découverte via Eureka
+          predicates:
+            - Path=/api/users/**
+        - id: rendez-vous
+          uri: lb://RENDEZVOUS
+          predicates:
+            - Path=/api/rendez-vous/**
+        - id: DossierMedical
+          uri: lb://DOSSIERMEDICAL
+          predicates:
+            - Path=/api/dossiers/**
+        - id: Blogs
+          uri: lb://BLOGS
+          predicates:
+            - Path=/api/blog/**
+        - id: Avis
+          uri: lb://AVIS
+          predicates:
+            - Path=/api/avis/**
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka  # Eureka server URL
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "health"
+          - "info"
+          - "gateway"  # L'exposition des endpoints, n'oubliez pas la virgule après chaque élément
+  endpoint:
+    gateway:
+      enabled: true  # Activer l'exposition des routes du Gateway
+    health:
+      show-details: always  # Afficher tous les détails pour le point de terminaison "health"

@@ -16,29 +16,3 @@ server:
     allow-bean-definition-overriding=true:
   application:
     name: gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-      routes:
-        - id: users
-          uri: http://localhost:8090
-          predicates:
-            - Path=/api/users/**
-        - id: rendez-vous
-          uri: http://localhost:8091
-          predicates:
-            - Path=/api/rendez-vous/**
-        - id: DossierMedical
-          uri: http://localhost:8092
-          predicates:
-            - Path=/api/DossierMedical/**
-        - id: Blogs
-          uri: http://localhost:8093
-          predicates:
-            - Path=/api/blog/**
-        - id: Avis
-          uri: http://localhost:8094
-          predicates:
-            - Path=/api/avis/**
