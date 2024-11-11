@@ -1,27 +1,29 @@
 eureka:
   instance:
     hostname: localhost
+    preferIpAddress: true
   client:
     service-url:
-      defaultZne: http://localhost:8761/eureka
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
 
 spring:
   application:
     name: Rendez-vous
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mydatabase?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/keycloak?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password:
+    password: root
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
     database: mysql
-
-
-
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
 
 server:
   port: 8091

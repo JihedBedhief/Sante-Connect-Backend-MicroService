@@ -10,6 +10,6 @@ public class KeycloakConfig {
     @Bean
     public Keycloak keycloak() {
         // Create and configure a Keycloak instance
-        return Keycloak.getInstance("http://localhost:8080/", "Pi-Dev", "admin", "admin", "pidev-client-ang");
+        return Keycloak.getInstance("http://localhost:8080/", "micro-services", "admin", "admin", "pidev-client-ang");
     }
 }

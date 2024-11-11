@@ -76,6 +76,7 @@ services:
       - microservices-network
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8761
       - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888?timeout=30000
       - EUREKA_INSTANCE_HOSTNAME=discovery
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
@@ -100,6 +101,28 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
     depends_on:
       - discovery-server
+
+  rendez-vous-service:
+    build:
+      context: ./Rendez-vous-MicroService
+      dockerfile: Dockerfile
+    container_name: rendez-vous
+    ports:
+      - "8091:8091"
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/keycloak?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    networks:
+      - microservices-network
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
 
 
   users-service:

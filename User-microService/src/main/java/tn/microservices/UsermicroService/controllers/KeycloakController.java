@@ -33,19 +33,19 @@ public class KeycloakController {
 
     @RequestMapping("/liste-users")
     public List<UserRepresentation> getUserList() {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         return realmResource.users().list();
     }
 
     @RequestMapping("/liste-roles")
     public List<RoleRepresentation> getRoles() {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         return realmResource.roles().list();
     }
 
     @RequestMapping("/liste-RolesNames")
     public List<String> getRealmRoleNames() {
-        List<RoleRepresentation> roles = keycloak.realm("Pi-Dev").roles().list();
+        List<RoleRepresentation> roles = keycloak.realm("micro-services").roles().list();
         return roles.stream()
                 .map(RoleRepresentation::getName)
                 .collect(Collectors.toList());
@@ -55,7 +55,7 @@ public class KeycloakController {
     @RequestMapping("/users/roles/{username}")
     public List<String> getUserRoles(@PathVariable String username) {
         List<String> roles = new ArrayList<>();
-        RealmResource realm = keycloak.realm("Pi-Dev");
+        RealmResource realm = keycloak.realm("micro-services");
         UsersResource users = realm.users();
         List<UserRepresentation> userRepresentations = users.search(username, 0, 1);
         if (userRepresentations.size() == 1) {
@@ -70,7 +70,7 @@ public class KeycloakController {
 
     @GetMapping("/rolesName")
     public List<String> getRolesNames() {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         List<RoleRepresentation> roles = realmResource.roles().list();
         return roles.stream().map(RoleRepresentation::getName).collect(Collectors.toList());
     }
@@ -83,9 +83,9 @@ public class KeycloakController {
             return ResponseEntity.badRequest().body("Role name and username must be provided");
         }
         try {
-            RoleRepresentation role = keycloak.realm("Pi-Dev").roles().get(roleName).toRepresentation();
-            UserRepresentation user = keycloak.realm("Pi-Dev").users().search(username).get(0);
-            keycloak.realm("Pi-Dev").users().get(user.getId()).roles().realmLevel().add(Collections.singletonList(role));
+            RoleRepresentation role = keycloak.realm("micro-services").roles().get(roleName).toRepresentation();
+            UserRepresentation user = keycloak.realm("micro-services").users().search(username).get(0);
+            keycloak.realm("micro-services").users().get(user.getId()).roles().realmLevel().add(Collections.singletonList(role));
             return ResponseEntity.status(HttpStatus.OK).body("Role Added To User");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -103,9 +103,9 @@ public class KeycloakController {
         }
 
         try {
-            RoleRepresentation role = keycloak.realm("Pi-Dev").roles().get(roleName).toRepresentation();
-            UserRepresentation user = keycloak.realm("Pi-Dev").users().search(username).get(0);
-            keycloak.realm("Pi-Dev").users().get(user.getId()).roles().realmLevel().remove(Collections.singletonList(role));
+            RoleRepresentation role = keycloak.realm("micro-services").roles().get(roleName).toRepresentation();
+            UserRepresentation user = keycloak.realm("micro-services").users().search(username).get(0);
+            keycloak.realm("micro-services").users().get(user.getId()).roles().realmLevel().remove(Collections.singletonList(role));
             return ResponseEntity.ok("Role removed from user successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -116,7 +116,7 @@ public class KeycloakController {
     @GetMapping("/role/{roleName}")
     public ResponseEntity<String> getRoleId(@PathVariable String roleName) {
         try {
-            RoleRepresentation role = keycloak.realm("Pi-Dev").roles().get(roleName).toRepresentation();
+            RoleRepresentation role = keycloak.realm("micro-services").roles().get(roleName).toRepresentation();
             if (role != null) {
                 String roleId = role.getId();
                 return ResponseEntity.ok(roleId);
@@ -136,12 +136,12 @@ public class KeycloakController {
         credential.setValue(password);
         credential.setTemporary(false);
 
-        keycloak.realm("Pi-Dev").users().get(userId).resetPassword(credential);
+        keycloak.realm("micro-services").users().get(userId).resetPassword(credential);
     }
 
     @PutMapping("/users/{userId}/disable")
     public void disableUser(@PathVariable String userId) {
-        UserResource userResource = keycloak.realm("Pi-Dev").users().get(userId);
+        UserResource userResource = keycloak.realm("micro-services").users().get(userId);
         UserRepresentation user = userResource.toRepresentation();
         user.setEnabled(false);
         userResource.update(user);
@@ -149,7 +149,7 @@ public class KeycloakController {
 
     @PutMapping("/users/{userId}/enable")
     public void enableUser(@PathVariable String userId) {
-        UserResource userResource = keycloak.realm("Pi-Dev").users().get(userId);
+        UserResource userResource = keycloak.realm("micro-services").users().get(userId);
         UserRepresentation user = userResource.toRepresentation();
         user.setEnabled(true);
         //user.setTotp(true);
@@ -160,7 +160,7 @@ public class KeycloakController {
     public ResponseEntity<RoleRepresentation> getRoleById(@PathVariable String roleId) {
         try {
             // RoleResource roleResource = keycloak.realm("google").rolesById().get(roleId);
-            RoleRepresentation role = keycloak.realm("Pi-Dev").rolesById().getRole(roleId);
+            RoleRepresentation role = keycloak.realm("micro-services").rolesById().getRole(roleId);
             if (role != null) {
                 return ResponseEntity.ok(role);
             } else {

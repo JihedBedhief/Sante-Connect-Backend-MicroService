@@ -4,11 +4,14 @@ server:
 spring:
   application:
     name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/configurations
+
 management:
   endpoints:
     web:

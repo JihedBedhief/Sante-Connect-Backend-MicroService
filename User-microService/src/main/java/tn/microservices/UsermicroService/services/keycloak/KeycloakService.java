@@ -18,28 +18,27 @@ public class KeycloakService {
     @Autowired
     private Keycloak keycloak;
     public void updateUser(String userId, UserRepresentation user) {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         UsersResource usersResource = realmResource.users();
         UserResource userResource = usersResource.get(userId);
         userResource.update(user);
     }
     public UserRepresentation getUserById(String userId) {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         UsersResource usersResource = realmResource.users();
         UserResource userResource = usersResource.get(userId);
-        System.out.println(userId + "???????????????????");
         return userResource.toRepresentation();
     }
 
     public void removeRoleFromUser(String username, String roleName) {
-        UserRepresentation user = keycloak.realm("Pi-Dev").users().search(username).get(0);
-        RoleRepresentation role = keycloak.realm("Pi-Dev").roles().get(roleName).toRepresentation();
-        keycloak.realm("Pi-Dev").users().get(user.getId()).roles().realmLevel().remove(Arrays.asList(role));
+        UserRepresentation user = keycloak.realm("micro-services").users().search(username).get(0);
+        RoleRepresentation role = keycloak.realm("micro-services").roles().get(roleName).toRepresentation();
+        keycloak.realm("micro-services").users().get(user.getId()).roles().realmLevel().remove(Arrays.asList(role));
     }
 
 
     public void createRole(String roleName) {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         RoleRepresentation role = new RoleRepresentation();
         role.setName(roleName);
         role.setClientRole(false); // set to true if client role
@@ -48,7 +47,7 @@ public class KeycloakService {
 
 
     public List<UserRepresentation> getUsersByRole(String roleName) {
-        RealmResource realmResource = keycloak.realm("Pi-Dev");
+        RealmResource realmResource = keycloak.realm("micro-services");
         RolesResource rolesResource = realmResource.roles();
         RoleResource roleResource = rolesResource.get(roleName);
 
